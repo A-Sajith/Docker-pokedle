@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Pokédle</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #1a1a2e;
+            color: white;
+        }
+        h1 { text-align: center; color: #e94560; }
+        p { text-align: center; }
+        .search-bar {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        input {
+            flex: 1;
+            padding: 10px;
+            border-radius: 8px;
+            border: none;
+            font-size: 16px;
+        }
+        button {
+            padding: 10px 20px;
+            background: #e94560;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover { background: #c73652; }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th {
+            background: #16213e;
+            padding: 12px;
+            text-align: center;
+            font-size: 14px;
+        }
+        td {
+            padding: 12px;
+            text-align: center;
+            border: 2px solid #1a1a2e;
+            font-weight: bold;
+            font-size: 15px;
+            border-radius: 4px;
+        }
+        .vert { background-color: #4caf50; color: white; }
+        .orange { background-color: #ff9800; color: white; }
+        .rouge { background-color: #f44336; color: white; }
+        .message {
+            text-align: center;
+            font-size: 24px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Pokédle</h1>
+    <p>Devine le Pokémon secret parmi les 151 premiers !</p>
+
+    <div class="search-bar">
+        <input type="text" id="input-pokemon" placeholder="Entre un nom de Pokémon...">
+        <button onclick="deviner()">Deviner</button>
+        <button onclick="nouveauPokemon()" style="background:#16213e">Nouveau Pokémon à deviner</button>
+
+    </div>
+
+    <div id="message"></div>
+
+    <table id="tableau" style="display:none">
+        <thead>
+            <tr>
+                <th>Nom</th>
+                <th>Type 1</th>
+                <th>Type 2</th>
+                <th>Évolution</th>
+                <th>Poids (kg)</th>
+                <th>Taille (m)</th>
+                <th>Génération</th>
+            </tr>
+        </thead>
+        <tbody id="resultats"></tbody>
+    </table>
+
+    <script>
+        async function deviner() {
+            const nom = document.getElementById("input-pokemon").value;
+            if (!nom) return;
+
+            const response = await fetch("/deviner", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ nom: nom })
+            });
+
+            const data = await response.json();
+
+            if (data.erreur) {
+                document.getElementById("message").innerHTML = 
+                    `<p style="color:red">❌ ${data.erreur}</p>`;
+                return;
+            }
+
+            document.getElementById("tableau").style.display = "table";
+
+            const tbody = document.getElementById("resultats");
+            const ligne = document.createElement("tr");
+            ligne.innerHTML = `
+                <td style="background:#16213e">${data.nom}</td>
+                <td class="${data.type1}">${data.valeurs.type1}</td>
+                <td class="${data.type2}">${data.valeurs.type2 ?? "Aucun"}</td>
+                <td class="${data.evolution}">Phase ${data.valeurs.evolution}</td>
+                <td class="${data.poids}">${data.valeurs.poids} kg</td>
+                <td class="${data.taille}">${data.valeurs.taille} m</td>
+                <td class="${data.generation}">Gén. ${data.valeurs.generation}</td>
+            `;
+            tbody.prepend(ligne);
+
+            if (data.gagne) {
+                document.getElementById("message").innerHTML = 
+                    `<p style="color:#4caf50">🎉 Bravo ! C'était bien ${data.nom} !</p>`;
+            }
+
+            document.getElementById("input-pokemon").value = "";
+        }
+
+        document.getElementById("input-pokemon")
+            .addEventListener("keypress", function(e) {
+                if (e.key === "Enter") deviner();
+            });
+
+        async function nouveauPokemon() {
+        await fetch("/nouveau", { method: "POST" });
+        document.getElementById("resultats").innerHTML = "";
+        document.getElementById("tableau").style.display = "none";
+        document.getElementById("message").innerHTML = "";
+        document.getElementById("input-pokemon").value = "";
+    }
+    </script>
+</body>
+</html>
