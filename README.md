@@ -84,4 +84,3 @@ pokedle/
 - Comparer des données et renvoyer des résultats colorés
 - Orchestrer une app avec Docker Compose
 - Mettre en place un pipeline CI/CD avec GitHub Actions
-- Publier une image Docker sur Docker Hub
