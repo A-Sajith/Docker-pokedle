@@ -39,18 +39,16 @@ def deviner():
 
         "type1": comparer_type(
             pokemon_devine["type1"],
-            pokemon_devine["type2"],
             secret["type1"],
             secret["type2"],
-            "type1"
+            1
         ),
-
+        
         "type2": comparer_type(
-            pokemon_devine["type1"],
             pokemon_devine["type2"],
             secret["type1"],
             secret["type2"],
-            "type2"
+            2
         ),
 
         "evolution": comparer_nombre(
@@ -105,31 +103,21 @@ def comparer(val1, val2):
 
 
 # Comparaison des types
-def comparer_type(devine1, devine2, secret1, secret2, type_actuel):
+def comparer_type(type_devine, secret1, secret2, position):
 
-    # TYPE 1
-    if type_actuel == "type1":
+    # Bon type à la bonne place
+    if position == 1 and type_devine == secret1:
+        return "vert"
 
-        if devine1 == secret1:
-            return "vert"
+    if position == 2 and type_devine == secret2:
+        return "vert"
 
-        elif devine1 == secret2 and secret2 not in ["", None]:
-            return "orange"
+    # Type présent mais mauvaise position
+    if type_devine == secret1 or type_devine == secret2:
+        return "orange"
 
-        else:
-            return "rouge"
-
-    # TYPE 2
-    elif type_actuel == "type2":
-
-        if devine2 == secret2:
-            return "vert"
-
-        elif devine2 == secret1 and secret1 not in ["", None]:
-            return "orange"
-
-        else:
-            return "rouge"
+    # Type absent
+    return "rouge"
 
 
 def comparer_nombre(val1, val2):
