@@ -61,9 +61,12 @@ docker-compose up
 http://localhost:5000
 
 ### Ou directement depuis Docker Hub
-docker pull ton-username/pokedle:latest
-docker run -p 5000:5000 ton-username/pokedle:latest
-
+```bash
+docker pull asajith/pokedle:latest
+```
+```bash
+docker run -p 5000:5000 asajith/pokedle:latest
+```
 ## Structure du projet
 ```bash
 pokedle/
