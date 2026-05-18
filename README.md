@@ -63,13 +63,13 @@ docker run -p 5000:5000 ton-username/pokedle:latest
 pokedle/
 ├── .github/
 │   └── workflows/
-│       └── docker.yml    # Pipeline CI/CD
+│       └── docker.yml    
 ├── templates/
-│   └── index.html        # Interface du jeu
-├── pokedle.py            # Backend Flask
-├── pokemons.json         # Base de données des 151 Pokémons
-├── Dockerfile            # Configuration Docker
-└── docker-compose.yml    # Orchestration
+│   └── index.html        
+├── pokedle.py            
+├── pokemons.json         
+├── Dockerfile            
+└── docker-compose.yml    
 ```
 ## Ce que j'ai appris
 
