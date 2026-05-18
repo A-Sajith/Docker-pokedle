@@ -45,11 +45,17 @@ A chaque push sur la branche main :
 ## Lancer le projet avec Docker
 
 ### 1. Cloner le repo
+```bash
 git clone https://github.com/A-Sajith/Docker-pokedle.git
+```
+```bash
 cd Docker-pokedle
+```
 
 ### 2. Lancer avec Docker Compose
+```bash
 docker-compose up
+```
 
 ### 3. Ouvrir dans le navigateur
 http://localhost:5000
